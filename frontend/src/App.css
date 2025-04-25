@@ -1,0 +1,62 @@
+/* General Styles */
+.dashboard-container,
+.risk-assessment-container,
+.workflow-container {
+  padding: 0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .metrics-row {
+    flex-direction: column;
+  }
+}
+
+/* Ant Design overrides */
+.ant-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  height: 100%;
+}
+
+.ant-card-head {
+  border-radius: 8px 8px 0 0;
+}
+
+.ant-statistic-title {
+  font-size: 14px;
+}
+
+.ant-progress-bg {
+  transition: all 0.3s ease;
+}
+
+.ant-table {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.ant-spin-container {
+  transition: all 0.3s;
+}
+
+/* Recharts customization */
+.recharts-default-tooltip {
+  border-radius: 4px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  border: none !important;
+}
+
+/* For dark mode */
+.ant-layout.ant-layout-has-sider {
+  transition: background-color 0.3s;
+}
+
+.ant-layout {
+  transition: background-color 0.3s;
+}
+
+.ant-menu {
+  transition: background-color 0.3s;
+}
