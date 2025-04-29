@@ -1,14 +1,19 @@
 import axios from 'axios';
 import { CustomerWithRisk, CustomerStatus } from '@/types';
 
+
+const baseURL = import.meta.env.VITE_API_URL || '/api';
+console.log('Using API URL:', baseURL);
+
 const api = axios.create({
-  baseURL: process.env.VITE_API_URL || '/api',
+  baseURL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
+// API functions
 export const fetchCustomers = async (): Promise<CustomerWithRisk[]> => {
   const response = await api.get('/customers');
   return response.data;
