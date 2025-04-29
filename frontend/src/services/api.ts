@@ -1,43 +1,61 @@
 import axios from 'axios';
 import { CustomerWithRisk, CustomerStatus } from '@/types';
 
+const API_URL = 'https://credit-risk-dashboard-api.onrender.com';
 
-const baseURL = import.meta.env.VITE_API_URL || '/api';
-console.log('Using API URL:', baseURL);
-
-const api = axios.create({
-  baseURL,
-  timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// API functions
 export const fetchCustomers = async (): Promise<CustomerWithRisk[]> => {
-  const response = await api.get('/customers');
-  return response.data;
+  try {
+    const response = await axios.get(`${API_URL}/api/customers`);
+    console.log('Customer data response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching customers:', error);
+    throw error;
+  }
 };
 
 export const fetchCustomerById = async (id: string): Promise<CustomerWithRisk> => {
-  const response = await api.get(`/customers/${id}`);
-  return response.data;
+  try {
+    const response = await axios.get(`${API_URL}/api/customers/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching customer ${id}:`, error);
+    throw error;
+  }
 };
 
 export const updateCustomerStatus = async (
   id: string, 
   status: CustomerStatus
 ): Promise<CustomerWithRisk> => {
-  const response = await api.put(`/customers/${id}/status`, { status });
-  return response.data;
+  try {
+    const response = await axios.put(`${API_URL}/api/customers/${id}/status`, { status });
+    return response.data;
+  } catch (error) {
+    console.error(`Error updating customer ${id} status:`, error);
+    throw error;
+  }
 };
 
 export const createHighRiskAlert = async (
   customerId: string, 
   riskScore: number
 ): Promise<{ success: boolean; message: string }> => {
-  const response = await api.post('/alerts', { customerId, riskScore });
-  return response.data;
+  try {
+    const response = await axios.post(`${API_URL}/api/alerts`, { customerId, riskScore });
+    return response.data;
+  } catch (error) {
+    console.error(`Error creating alert for customer ${customerId}:`, error);
+    throw error;
+  }
 };
+
+const api = axios.create({
+  baseURL: API_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 export default api;
