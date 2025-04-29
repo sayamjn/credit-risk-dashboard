@@ -120,7 +120,7 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
               
               <div>
                 <Text strong><FileSearchOutlined /> Current Status:</Text>{' '}
-                <Form.Item name="currentStatus" noStyle initialValue={selectedCustomer.status}>
+                <Form.Item name="currentStatus" noStyle initialValue={selectedCustomer?.status || ''}>
                   <Input disabled />
                 </Form.Item>
               </div>
@@ -129,7 +129,7 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
                 name="newStatus"
                 label="Update Status To"
                 rules={[{ required: true, message: 'Please select a new status' }]}
-                initialValue={selectedCustomer.status}
+                initialValue={selectedCustomer?.status || 'Review'}
               >
                 <Select placeholder="Select new status">
                   <Option value="Review">Review</Option>
