@@ -2,7 +2,7 @@ import axios from 'axios';
 import { CustomerWithRisk, CustomerStatus } from '@/types';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: process.env.VITE_API_URL || '/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

@@ -6,7 +6,10 @@ import customerRoutes from './routes/customerRoutes';
 const app = express();
 const PORT = process.env.PORT || 6000;
 
-app.use(cors());
+app.use(cors({
+  origin: ['https://credit-theta.vercel.app', 'http://localhost:3000'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(morgan('dev'));
 
