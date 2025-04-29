@@ -18,13 +18,18 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
   onUpdateStatus 
 }) => {
   const [form] = Form.useForm();
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerWithRisk | null>(null);
+  const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   
+  const selectedCustomer = selectedCustomerId 
+    ? customers.find(c => c.customerId === selectedCustomerId) 
+    : null;
+  
   const handleCustomerChange = (customerId: string) => {
-    const customer = customers.find(c => c.customerId === customerId) || null;
-    setSelectedCustomer(customer);
+    setSelectedCustomerId(customerId);
+    
+    const customer = customers.find(c => c.customerId === customerId);
     if (customer) {
       form.setFieldsValue({
         currentStatus: customer.status,
@@ -34,11 +39,11 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
   };
   
   const handleSubmit = async (values: any) => {
-    if (!selectedCustomer) return;
+    if (!selectedCustomerId) return;
     
     try {
       setSubmitting(true);
-      await onUpdateStatus(selectedCustomer.customerId, values.newStatus);
+      await onUpdateStatus(selectedCustomerId, values.newStatus);
       setShowSuccess(true);
       
       setTimeout(() => {
@@ -69,9 +74,6 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
             loading={loading}
             showSearch
             optionFilterProp="children"
-            filterOption={(input, option) =>
-              option?.children?.toString().toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
           >
             {customers.map(customer => (
               <Option key={customer.customerId} value={customer.customerId}>
@@ -81,7 +83,7 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
           </Select>
         </Form.Item>
         
-        {selectedCustomer && (
+        {selectedCustomer ? (
           <>
             <Divider />
             
@@ -120,7 +122,7 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
               
               <div>
                 <Text strong><FileSearchOutlined /> Current Status:</Text>{' '}
-                <Form.Item name="currentStatus" noStyle initialValue={selectedCustomer?.status || ''}>
+                <Form.Item name="currentStatus" noStyle>
                   <Input disabled />
                 </Form.Item>
               </div>
@@ -129,7 +131,6 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
                 name="newStatus"
                 label="Update Status To"
                 rules={[{ required: true, message: 'Please select a new status' }]}
-                initialValue={selectedCustomer?.status || 'Review'}
               >
                 <Select placeholder="Select new status">
                   <Option value="Review">Review</Option>
@@ -150,7 +151,7 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
               {showSuccess && (
                 <Alert
                   message="Status Updated"
-                  description={`Customer status has been successfully updated.`}
+                  description="Customer status has been successfully updated."
                   type="success"
                   showIcon
                 />
@@ -168,7 +169,7 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
               </Form.Item>
             </Space>
           </>
-        )}
+        ) : null}
       </Form>
     </Card>
   );
