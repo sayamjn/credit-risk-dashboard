@@ -4,10 +4,14 @@ import morgan from 'morgan';
 import customerRoutes from './routes/customerRoutes';
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 6000;
 
 app.use(cors({
-  origin: ['https://credit-theta.vercel.app', 'http://localhost:3000'],
+  origin: [
+    'https://credit-theta.vercel.app', 
+    'https://credit-e4ooyxxyo-sayamjns-projects.vercel.app',
+    'http://localhost:3000'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
