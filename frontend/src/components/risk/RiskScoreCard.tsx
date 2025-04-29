@@ -20,9 +20,9 @@ const RiskScoreCard: React.FC<RiskScoreCardProps> = ({ customer }) => {
   
   const getStatusColor = () => {
     switch (customer.status) {
-      case 'Approved': return 'green';
-      case 'Review': return 'blue';
-      case 'Rejected': return 'red';
+      case 'Approved': return 'success';
+      case 'Review': return 'processing';
+      case 'Rejected': return 'error';
       default: return 'default';
     }
   };
@@ -38,7 +38,8 @@ const RiskScoreCard: React.FC<RiskScoreCardProps> = ({ customer }) => {
             style={{ 
               fontSize: '16px', 
               fontWeight: 'bold',
-              color: getStatusColor() === 'blue' ? '#1890ff' : getStatusColor() === 'green' ? '#52c41a' : '#f5222d'
+              color: getStatusColor() === 'processing' ? '#1890ff' : 
+                     getStatusColor() === 'success' ? '#52c41a' : '#f5222d'
             }}
           />
         </div>

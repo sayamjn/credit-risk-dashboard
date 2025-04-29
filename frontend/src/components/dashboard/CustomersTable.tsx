@@ -147,7 +147,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
         { text: 'Approved', value: 'Approved' },
         { text: 'Rejected', value: 'Rejected' },
       ],
-      onFilter: (value: string, record: CustomerWithRisk) => record.status === value,
+      onFilter: (value: any, record: CustomerWithRisk) => record.status === value,
     },
   ];
 
