@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Table, Card, Tag, Progress, Input, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { CustomerWithRisk, RiskLevel, CustomerStatus } from '@/types';
+import { ColumnType } from 'antd/es/table';
 
 interface CustomersTableProps {
   customers: CustomerWithRisk[];
@@ -62,7 +63,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
     }
   };
 
-  const columns = [
+  const columns: ColumnType<CustomerWithRisk>[] = [
     {
       title: 'Customer ID',
       dataIndex: 'customerId',
@@ -118,7 +119,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
         { text: 'Medium', value: 'Medium' },
         { text: 'High', value: 'High' },
       ],
-      onFilter: (value: string, record: CustomerWithRisk) => 
+      onFilter: (value: any, record: CustomerWithRisk) => 
         record.riskAssessment.riskLevel === value,
     },
     {

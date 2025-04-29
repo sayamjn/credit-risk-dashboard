@@ -12,33 +12,35 @@ interface StatusUpdateFormProps {
   onUpdateStatus: (customerId: string, status: CustomerStatus) => Promise<void>;
 }
 
-const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
-  customers,
-  loading,
-  onUpdateStatus
+const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({ 
+  customers, 
+  loading, 
+  onUpdateStatus 
 }) => {
   const [form] = Form.useForm();
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerWithRisk | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-
+  
   const handleCustomerChange = (customerId: string) => {
     const customer = customers.find(c => c.customerId === customerId) || null;
     setSelectedCustomer(customer);
-    form.setFieldsValue({
-      currentStatus: customer?.status,
-      newStatus: customer?.status,
-    });
+    if (customer) {
+      form.setFieldsValue({
+        currentStatus: customer.status,
+        newStatus: customer.status,
+      });
+    }
   };
-
+  
   const handleSubmit = async (values: any) => {
     if (!selectedCustomer) return;
-
+    
     try {
       setSubmitting(true);
       await onUpdateStatus(selectedCustomer.customerId, values.newStatus);
       setShowSuccess(true);
-
+      
       setTimeout(() => {
         setShowSuccess(false);
       }, 3000);
@@ -48,7 +50,7 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
       setSubmitting(false);
     }
   };
-
+  
   return (
     <Card title="Update Customer Status" loading={loading}>
       <Form
@@ -78,55 +80,56 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
             ))}
           </Select>
         </Form.Item>
-
+        
         {selectedCustomer && (
           <>
             <Divider />
-
+            
             <Space direction="vertical" size="middle" style={{ width: '100%' }}>
               <Title level={5}>Customer Information</Title>
-
+              
               <div>
                 <Text strong><UserOutlined /> Name:</Text> {selectedCustomer.name}
               </div>
-
+              
               <Space size="large">
                 <div>
                   <Text strong><InfoCircleOutlined /> Risk Score:</Text>{' '}
                   <Text
                     type={
                       selectedCustomer.riskAssessment.riskScore >= 70 ? 'success' :
-                        selectedCustomer.riskAssessment.riskScore >= 40 ? 'warning' : 'danger'
+                      selectedCustomer.riskAssessment.riskScore >= 40 ? 'warning' : 'danger'
                     }
                   >
                     {selectedCustomer.riskAssessment.riskScore.toFixed(1)}
                   </Text>
                 </div>
-
+                
                 <div>
                   <Text strong><InfoCircleOutlined /> Risk Level:</Text>{' '}
                   <Text
                     type={
                       selectedCustomer.riskAssessment.riskLevel === 'Low' ? 'success' :
-                        selectedCustomer.riskAssessment.riskLevel === 'Medium' ? 'warning' : 'danger'
+                      selectedCustomer.riskAssessment.riskLevel === 'Medium' ? 'warning' : 'danger'
                     }
                   >
                     {selectedCustomer.riskAssessment.riskLevel}
                   </Text>
                 </div>
               </Space>
-
+              
               <div>
                 <Text strong><FileSearchOutlined /> Current Status:</Text>{' '}
-                <Form.Item name="currentStatus" noStyle initialValue={selectedCustomer?.status || ''}>
+                <Form.Item name="currentStatus" noStyle initialValue={selectedCustomer.status}>
                   <Input disabled />
                 </Form.Item>
               </div>
-
+              
               <Form.Item
                 name="newStatus"
                 label="Update Status To"
                 rules={[{ required: true, message: 'Please select a new status' }]}
+                initialValue={selectedCustomer.status}
               >
                 <Select placeholder="Select new status">
                   <Option value="Review">Review</Option>
@@ -134,7 +137,7 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
                   <Option value="Rejected">Rejected</Option>
                 </Select>
               </Form.Item>
-
+              
               {selectedCustomer.riskAssessment.riskLevel === 'High' && (
                 <Alert
                   message="High Risk Warning"
@@ -143,7 +146,7 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
                   showIcon
                 />
               )}
-
+              
               {showSuccess && (
                 <Alert
                   message="Status Updated"
@@ -152,11 +155,11 @@ const StatusUpdateForm: React.FC<StatusUpdateFormProps> = ({
                   showIcon
                 />
               )}
-
+              
               <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
+                <Button 
+                  type="primary" 
+                  htmlType="submit" 
                   loading={submitting}
                   block
                 >

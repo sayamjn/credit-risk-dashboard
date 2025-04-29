@@ -17,7 +17,7 @@
       1
     ],
     "accountBalance": 12500,
-    "status": "Approved"
+    "status": "Rejected"
   },
   {
     "customerId": "CUST1002",
@@ -77,7 +77,7 @@
       1
     ],
     "accountBalance": 3200,
-    "status": "Approved"
+    "status": "Rejected"
   },
   {
     "customerId": "CUST1005",
