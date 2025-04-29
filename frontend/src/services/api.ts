@@ -14,6 +14,7 @@ export const fetchCustomers = async (): Promise<CustomerWithRisk[]> => {
   }
 };
 
+
 export const fetchCustomerById = async (id: string): Promise<CustomerWithRisk> => {
   try {
     const response = await axios.get(`${API_URL}/api/customers/${id}`);
